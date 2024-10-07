@@ -58,6 +58,15 @@ body {
   padding: 0;
 }
 
+.reset {
+  width: 60px;
+  margin: 20px;
+  margin-left: 60px;
+  background: #c3fad3;
+  border: 1px solid #999;
+  border-radius: 10%;
+}
+
 .square {
   background: #fff;
   border: 1px solid #999;

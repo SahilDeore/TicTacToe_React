@@ -33,6 +33,11 @@ export default function Board() {
     //console.log("switching");
   }
 
+  function resetBoard() {
+    setValue("X");
+    setSquares(Array(9).fill(null));
+  }
+
   return (
     <div>
       <div className="status">{status}</div>
@@ -51,6 +56,9 @@ export default function Board() {
           <Square value={squares[6]} onSquareClick={() => handleClick(6)} />
           <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
           <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
+        </div>
+        <div>
+            <button className="reset" onClick={() => resetBoard()}>New Game</button>
         </div>
       </div>
     </div>);
