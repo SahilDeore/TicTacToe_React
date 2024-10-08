@@ -10,17 +10,17 @@ export default function Board() {
   let status;
   if (winner) {
     status = "Winner: " + winner;
-  } else if (!squares.includes(null)){
+  } else if (!squares.includes(null)) {
     status = "Draw";
   } else {
     status = "Next player: " + (value);
   }
 
   function handleClick(index) {
-    if(squares[index] || calculateWinner(squares)) {
+    if (squares[index] || calculateWinner(squares)) {
       return;
     }
-    
+
     switchValue();
     const nextSquares = squares.slice();
     nextSquares[index] = value;
@@ -40,7 +40,7 @@ export default function Board() {
 
   return (
     <div>
-      <div className="status">{status}</div>
+      <div className="label">{status}</div>
       <div className="board">
         <div className="board-row">
           <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
@@ -57,9 +57,9 @@ export default function Board() {
           <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
           <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
         </div>
-        <div>
-            <button className="reset" onClick={() => resetBoard()}>New Game</button>
-        </div>
+      </div>
+      <div>
+        <button className="clicker" onClick={() => resetBoard()}>New Game</button>
       </div>
     </div>);
 }

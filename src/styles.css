@@ -58,7 +58,7 @@ body {
   padding: 0;
 }
 
-.reset {
+.clicker {
   width: 60px;
   margin: 20px;
   margin-left: 60px;
@@ -88,9 +88,10 @@ body {
   display: table;
 }
 
-.status {
+.label {
   margin-bottom: 10px;
 }
+
 .game {
   display: flex;
   flex-direction: row;
