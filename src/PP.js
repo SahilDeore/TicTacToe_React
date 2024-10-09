@@ -1,10 +1,10 @@
-import Board from "./Board";
+import PP_Board from "./PP_Board";
 
 export default function PP() {
     return (
         <div>
             <div>Play a friend</div>
-            <Board />
+            <PP_Board />
         </div>
 
     );
