@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import CPU from "./CPU";
 import Duo from "./Duo";
 

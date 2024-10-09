@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import Online from "./Online";
 import PP from "./PP";
 
