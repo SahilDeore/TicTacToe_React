@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import CPU from "./CPU";
 import Duo from "./Duo";
+import Online from './Online';
 
 export default function Game() {
 
@@ -20,7 +21,8 @@ export default function Game() {
         {!page && (
           <div>
             <div><button className="clicker" onClick={() => handleButtonClick("CPU")}>CPU</button></div>
-            <div><button className="clicker" onClick={() => handleButtonClick("Duo")}>Play vs Friend</button></div>
+            <div><button className="clicker" onClick={() => handleButtonClick("Duo")}>Pass & Play</button></div>
+            <div><button className="clicker" onClick={() => handleButtonClick("Online")}>Online</button></div>
           </div>
 
         )}
@@ -35,6 +37,12 @@ export default function Game() {
         {page === "Duo" && (
           <div>
             <Duo />
+            <HomeButton onButtonClick={() => handleGoBack()} />
+          </div>
+        )}
+        {page === "Online" && (
+          <div>
+            <Online />
             <HomeButton onButtonClick={() => handleGoBack()} />
           </div>
         )}
