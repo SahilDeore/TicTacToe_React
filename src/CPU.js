@@ -12,6 +12,7 @@ export default function CPU() {
     const [error, setError] = useState(null);
     const [waiting, setWaiting] = useState(false);
     const [isActive, setIsActive] = useState(true);
+    const [winner, setWinner] = useState(null);
 
     const fetchData = async () => {
         try {
@@ -33,7 +34,9 @@ export default function CPU() {
             setSquares(data.state);
             setNext(data.next);
             setWaiting(false);
-            if(calculateWinner(data.state)) {
+            let currWinner = calculateWinner(data.state);
+            if(currWinner || !data.state.includes(null)) {
+                setWinner(currWinner);
                 setIsActive(false);
             }
 
@@ -55,22 +58,22 @@ export default function CPU() {
     useEffect(() => {
         if (waiting && isActive) {
             fetchData();
-            if (calculateWinner(squares)) {
-                setIsActive(false);
-            }
         }
 
     }, [waiting]);
 
 
     function handleClick(index) {
-        if (squares[index] || !isActive || calculateWinner(squares) || waiting || error) {
+        
+        if (squares[index] || !isActive || waiting || error) {
             return;
         }
         
         const nextSquares = squares.slice();
         nextSquares[index] = next;
-        if (calculateWinner(nextSquares)) {
+        let currWinner = calculateWinner(nextSquares);
+        if (currWinner || !nextSquares.includes(null)) {
+            setWinner(currWinner);
             setIsActive(false);
         }
         setSquares(nextSquares);
@@ -93,9 +96,9 @@ export default function CPU() {
     function generateStatus() {
 
         if(!isActive) {
-            if (calculateWinner(squares) === firstPlayer) {
+            if (winner === firstPlayer) {
                 return "You WON!";
-            } else if (calculateWinner(squares) === secondPlayer) {
+            } else if (winner === secondPlayer) {
                 return "You Lost"
             } else if (!squares.includes(null)) {
                 return "Draw";
