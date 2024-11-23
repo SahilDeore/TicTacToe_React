@@ -86,6 +86,97 @@ body {
   clear: both;
   content: '';
   display: table;
+  min-width: 183px;
+}
+
+.board {
+  position: relative;
+  width: 177px;
+  opacity: 100%;
+}
+
+.strike-first-column {
+  background-color: #000000;
+  width: 5px;
+  height: 160px;
+  position: absolute;
+  top: 8px;
+  left: 28px;
+  z-index: 10;
+}
+
+.strike-second-column {
+  background-color: #000000;
+  width: 5px;
+  height: 160px;
+  position: absolute;
+  top: 8px;
+  left: 87px;
+  z-index: 10;
+}
+
+.strike-third-column {
+  background-color: #000000;
+  width: 5px;
+  height: 160px;
+  position: absolute;
+  top: 8px;
+  left: 146px;
+  z-index: 10;
+}
+
+.strike-first-row {
+  background-color: #000000;
+  width: 160px;
+  height: 5px;
+  position: absolute;
+  top: 28px;
+  left: 8px;
+  z-index: 10;
+}
+
+.strike-second-row {
+  background-color: #000000;
+  width: 160px;
+  height: 5px;
+  position: absolute;
+  top: 87px;
+  left: 8px;
+  z-index: 10;
+}
+
+.strike-third-row {
+  background-color: #000000;
+  width: 160px;
+  height: 5px;
+  position: absolute;
+  top: 146px;
+  left: 8px;
+  z-index: 10;
+}
+
+.strike-first-diagonal {
+  background-color: #000000;
+  width: 230px;
+  height: 5px;
+  position: absolute;
+  top: 5px;
+  left: 8px;
+  z-index: 10;
+  transform: rotate(45deg);
+  transform-origin: top left;
+}
+
+.strike-second-diagonal {
+  background-color: #000000;
+  width: 230px;
+  height: 5px;
+  position: absolute;
+  top: 8px;
+  left: 173px;
+  z-index: 10;
+  transform: rotate(135deg);
+  transform-origin: top left;
 }
 
 .label {

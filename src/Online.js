@@ -12,7 +12,8 @@ export default function Online() {
     return (
         <div>
             <div>Online Game</div>
-            <Board squares={squares} handleClick={handleClick}/>
+            Coming soon!
+            <Board squares={squares} handleClick={handleClick} strike={[]}/>
         </div>
 
     );
