@@ -1,25 +1,17 @@
 import { useState, useEffect } from 'react';
 import Board from './Board';
+import Error from './Error';
 
 export default function CPU() {
 
+    const firstPlayer = "X";
+    const secondPlayer = "O";
+
     const [squares, setSquares] = useState(Array(9).fill(null));
-    const [next, setNext] = useState("X");
+    const [next, setNext] = useState(firstPlayer);
     const [error, setError] = useState(null);
     const [waiting, setWaiting] = useState(false);
     const [isActive, setIsActive] = useState(true);
-
-    const winner = calculateWinner(squares);
-    let status;
-    if (winner === "X") {
-        status = "You WON!";
-    } else if (winner === "O") {
-        status = "You Lost."
-    } else if (!squares.includes(null)) {
-        status = "Draw";
-    } else {
-        status = "Your Turn!";
-    }
 
     const fetchData = async () => {
         try {
@@ -36,12 +28,17 @@ export default function CPU() {
             }
 
             const data = await response.json();
-            console.log(data.state);
+            // console.log(data.state);
 
             setSquares(data.state);
             setNext(data.next);
+            setWaiting(false);
+            if(calculateWinner(data.state)) {
+                setIsActive(false);
+            }
 
         } catch (error) {
+            setWaiting(false);
             setError(error);
         }
     };
@@ -58,7 +55,6 @@ export default function CPU() {
     useEffect(() => {
         if (waiting && isActive) {
             fetchData();
-            setWaiting(false);
             if (calculateWinner(squares)) {
                 setIsActive(false);
             }
@@ -68,7 +64,7 @@ export default function CPU() {
 
 
     function handleClick(index) {
-        if (squares[index] || !isActive || calculateWinner(squares)) {
+        if (squares[index] || !isActive || calculateWinner(squares) || waiting || error) {
             return;
         }
         
@@ -86,22 +82,48 @@ export default function CPU() {
         next == "X" ? setNext("O") : setNext("X");
     }
 
-    if (error) {
-        return (<div> {error}</div>);
-    }
-
     function resetBoard() {
-        setNext("X");
+        setNext(firstPlayer);
         setSquares(Array(9).fill(null));
         setIsActive(true);
         setWaiting(false);
+        setError(false);
+    }
+
+    function generateStatus() {
+
+        if(!isActive) {
+            if (calculateWinner(squares) === firstPlayer) {
+                return "You WON!";
+            } else if (calculateWinner(squares) === secondPlayer) {
+                return "You Lost"
+            } else if (!squares.includes(null)) {
+                return "Draw";
+            }
+        } else if(waiting) {
+            return "Waiting for server";
+        } else if(error){
+            return (<Error message="Unable to contact server. Please try again later."/>);
+        } else {
+            return "Your turn"
+        }
+
+    }
+
+    function status() {
+        let statusmessage = generateStatus();
+        return (
+            <div>
+                {statusmessage}
+            </div>
+        );
     }
 
     return (
 
         <div>
             <div>CPU GAME!</div>
-            <div className="label">{status}</div>
+            {status()}
             <Board squares={squares} handleClick={handleClick} />
             <div>
                 <button className="clicker" onClick={() => resetBoard()}>New Game</button>
