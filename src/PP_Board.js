@@ -89,11 +89,11 @@ export default function PP_Board() {
     }
 
     return (
-        <div>
+        <div className='duo-game'>
             <div className="label">{generateStatus()}</div>
             <Board squares={squares} handleClick={handleClick} strike={getLineList()} />
-            <div>
-                <button className="clicker" onClick={() => resetBoard()}>New Game</button>
+            <div className='center'>
+                <button className="clicker new-game" onClick={() => resetBoard()}>New Game</button>
             </div>
         </div>);
 }

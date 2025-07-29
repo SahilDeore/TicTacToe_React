@@ -169,14 +169,14 @@ export default function CPU() {
 
     return (
 
-        <div>
-            <div>CPU GAME!</div>
+        <>
+            CPU GAME!
             {status()}
             <Board squares={squares} handleClick={handleClick} strike={getLineList()} />
             <div>
                 <button className="clicker" onClick={() => resetBoard()}>New Game</button>
             </div>
-        </div>
+        </>
 
     );
 }

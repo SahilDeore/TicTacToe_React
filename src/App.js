@@ -17,44 +17,39 @@ export default function Game() {
 
   return (
     <div className="game">
+
+      {!page && (
+        
+        <div className='box'>
+          <button className="clicker" onClick={() => handleButtonClick("CPU")}>CPU</button><br />
+          <button className="clicker" onClick={() => handleButtonClick("Duo")}>Pass & Play</button><br />
+          <button className="clicker" onClick={() => handleButtonClick("Online")}>Online</button><br/>
+        </div>
+        
+      )}
+
       <div>
-        {!page && (
-          <div>
-            <div><button className="clicker" onClick={() => handleButtonClick("CPU")}>CPU</button></div>
-            <div><button className="clicker" onClick={() => handleButtonClick("Duo")}>Pass & Play</button></div>
-            <div><button className="clicker" onClick={() => handleButtonClick("Online")}>Online</button></div>
-          </div>
-
-        )}
-
-
         {page === "CPU" && (
-          <div>
-            <CPU />
-            <HomeButton onButtonClick={() => handleGoBack()} />
-          </div>
+          <CPU />
         )}
         {page === "Duo" && (
-          <div>
-            <Duo />
-            <HomeButton onButtonClick={() => handleGoBack()} />
-          </div>
+          <Duo />
         )}
         {page === "Online" && (
-          <div>
-            <Online />
-            <HomeButton onButtonClick={() => handleGoBack()} />
-          </div>
+          <Online />
         )}
       </div>
+
+      <HomeButton onButtonClick={() => handleGoBack()} />
+     
     </div>
   );
 }
 
 function HomeButton({ onButtonClick }) {
   return (
-    <div>
+    <>
       <button className="clicker" onClick={onButtonClick}>HOME</button>
-    </div>
+    </>
   )
 }
