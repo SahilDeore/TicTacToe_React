@@ -7,12 +7,12 @@ export default function CPU() {
     const firstPlayer = "X";
     const secondPlayer = "O";
 
-    const [squares, setSquares] = useState(Array(9).fill(null));
-    const [next, setNext] = useState(firstPlayer);
-    const [error, setError] = useState(null);
-    const [waiting, setWaiting] = useState(false);
-    const [isActive, setIsActive] = useState(true);
-    const [winner, setWinner] = useState(null);
+    const [squares, setSquares] = useState(Array(9).fill(null)); // Array of the squares to indicate current state of the board
+    const [next, setNext] = useState(firstPlayer); // The next player
+    const [error, setError] = useState(null); // boolean flag to indicate error status
+    const [waiting, setWaiting] = useState(false); // boolean flag to indicate if application waiting for server response
+    const [isActive, setIsActive] = useState(true); // boolean flag to determine if the game is still ongoing, false if it is either a win, a loss or a draw
+    const [winner, setWinner] = useState(null); // contains the winner (X or O)
 
     const fetchData = async () => {
         try {
@@ -40,9 +40,9 @@ export default function CPU() {
                 setIsActive(false);
             }
 
-        } catch (error) {
+        } catch (exception) {
             setWaiting(false);
-            setError(error);
+            setError(exception);
         }
     };
 
