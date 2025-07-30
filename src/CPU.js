@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Board from './Board';
-import Error from './Error';
+import Button from './Button';
 
 export default function CPU() {
 
@@ -9,63 +9,18 @@ export default function CPU() {
 
     const [squares, setSquares] = useState(Array(9).fill(null)); // Array of the squares to indicate current state of the board
     const [next, setNext] = useState(firstPlayer); // The next player
-    const [error, setError] = useState(null); // boolean flag to indicate error status
-    const [waiting, setWaiting] = useState(false); // boolean flag to indicate if application waiting for server response
     const [isActive, setIsActive] = useState(true); // boolean flag to determine if the game is still ongoing, false if it is either a win, a loss or a draw
     const [winner, setWinner] = useState(null); // contains the winner (X or O)
+    const [difficulty, setDifficulty] = useState(null); // contains the difficulty value, EASY, MEDIUM, DIFFICULT
+    const [userPlayer, setUserPlayer] = useState("X"); // contains the symbol that will be played by user
 
-    const fetchData = async () => {
-        try {
-
-            const response = await (fetch('http://localhost:8080/play', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(getCurrentState()),
-            }));
-            if (!response.ok) {
-                throw new Error("Network error!");
-            }
-
-            const data = await response.json();
-            // console.log(data.state);
-
-            setSquares(data.state);
-            setNext(data.next);
-            setWaiting(false);
-            let currWinner = calculateWinner(data.state);
-            if(currWinner || !data.state.includes(null)) {
-                setWinner(currWinner);
-                setIsActive(false);
-            }
-
-        } catch (exception) {
-            setWaiting(false);
-            setError(exception);
-        }
-    };
-
-    function getCurrentState() {
-        const jsonBody = {
-            "state": squares,
-            "next": next
-        };
-
-        return jsonBody;
+    function selectDifficulty(difficultySelected) {
+        setDifficulty(difficultySelected);
     }
 
-    useEffect(() => {
-        if (waiting && isActive) {
-            fetchData();
-        }
-
-    }, [waiting]);
-
-
     function handleClick(index) {
-        
-        if (squares[index] || !isActive || waiting || error || winner) {
+
+        if (squares[index] || !isActive || winner) {
             return;
         }
         
@@ -78,7 +33,6 @@ export default function CPU() {
         }
         setSquares(nextSquares);
         switchNext();
-        setWaiting(true);
     }
 
     function switchNext() {
@@ -89,36 +43,29 @@ export default function CPU() {
         setNext(firstPlayer);
         setSquares(Array(9).fill(null));
         setIsActive(true);
-        setWaiting(false);
-        setError(false);
         setWinner(null);
     }
 
     function generateStatus() {
 
         if(!isActive) {
-            if (winner === firstPlayer) {
+            if (winner === userPlayer) {
                 return "You WON!";
-            } else if (winner === secondPlayer) {
-                return "You Lost"
+            } else if (winner && winner !== userPlayer) {
+                return "You Lost!"
             } else if (!squares.includes(null)) {
                 return "Draw";
             }
-        } else if(waiting) {
-            return "Waiting for server";
-        } else if(error){
-            return (<Error message="Unable to contact server. Please try again later."/>);
-        } else {
-            return "Your turn"
+        } else if (!difficulty){
+            return "Select Difficulty";
         }
 
     }
 
     function status() {
-        let statusmessage = generateStatus();
         return (
             <div>
-                {statusmessage}
+                {generateStatus()}
             </div>
         );
     }
@@ -172,10 +119,23 @@ export default function CPU() {
         <>
             CPU GAME!
             {status()}
-            <Board squares={squares} handleClick={handleClick} strike={getLineList()} />
-            <div>
-                <button className="clicker" onClick={() => resetBoard()}>New Game</button>
-            </div>
+            {!difficulty && (
+                <div>
+                    <Button text="Easy" onButtonClick={() => selectDifficulty("Easy")}/>
+                    <Button text="Medium" onButtonClick={() => selectDifficulty("Medium")}/>
+                    <Button text="Difficult" onButtonClick={() => selectDifficulty("Difficult")}/>
+                </div>
+            )
+            }
+            {difficulty && (
+                <div>
+                    
+                    <Board squares={squares} handleClick={handleClick} strike={getLineList()} />
+                    <div>
+                        <Button text="New Game" onButtonClick={() => resetBoard()} />
+                    </div>
+                </div>
+            )}
         </>
 
     );
