@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Board from './Board';
 import Button from './Button';
-import {easyMove, mediumMove, difficultMove} from './Algo';
+import * as algo from './Algo';
 
 export default function CPU() {
 
@@ -26,7 +26,7 @@ export default function CPU() {
         
         const nextSquares = squares.slice();
         nextSquares[index] = userPlayer;
-        let currWinner = calculateWinner(nextSquares);
+        let currWinner =  algo.calculateWinner(nextSquares);
         if (currWinner || !nextSquares.includes(null)) {
             setWinner(currWinner);
             setIsActive(false);
@@ -39,14 +39,14 @@ export default function CPU() {
 
     function playCPUMove(currSquares) {
         if (difficulty == "Easy") {
-            easyMove(currSquares, CPUPlayer);
+            algo.easyMove(currSquares, CPUPlayer);
         } else if (difficulty == "Medium") {
-            mediumMove(currSquares, CPUPlayer);
+             algo.mediumMove(currSquares, CPUPlayer);
         } else if (difficulty == "Difficult") {
-            difficultMove(currSquares, CPUPlayer);
+             algo.difficultMove(currSquares, CPUPlayer);
         }
 
-        let currWinner = calculateWinner(currSquares);
+        let currWinner =  algo.calculateWinner(currSquares);
 
         if (currWinner || !currSquares.includes(null)) {
             setWinner(currWinner);
@@ -92,37 +92,8 @@ export default function CPU() {
         );
     }
 
-    function calculateWinner(squares) {
-        const lines = [
-            [0, 1, 2],
-            [3, 4, 5],
-            [6, 7, 8],
-            [0, 3, 6],
-            [1, 4, 7],
-            [2, 5, 8],
-            [0, 4, 8],
-            [2, 4, 6]
-        ];
-        for (let i = 0; i < lines.length; i++) {
-            const [a, b, c] = lines[i];
-            if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-                return squares[a];
-            }
-        }
-        return null;
-    }
-
     function getLineList() {
-        const lines = [
-            [0, 1, 2],
-            [3, 4, 5],
-            [6, 7, 8],
-            [0, 3, 6],
-            [1, 4, 7],
-            [2, 5, 8],
-            [0, 4, 8],
-            [2, 4, 6]
-        ];
+        const lines = algo.lines;
 
         if(!winner) {
             return [];
