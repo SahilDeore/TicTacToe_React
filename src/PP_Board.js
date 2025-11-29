@@ -64,34 +64,10 @@ export default function PP_Board() {
         return null;
     }
 
-    function getLineList() {
-        const lines = [
-            [0, 1, 2],
-            [3, 4, 5],
-            [6, 7, 8],
-            [0, 3, 6],
-            [1, 4, 7],
-            [2, 5, 8],
-            [0, 4, 8],
-            [2, 4, 6]
-        ];
-
-        if(!winner) {
-            return [];
-        }
-        for (let i = 0; i < lines.length; i++) {
-            const [a, b, c] = lines[i];
-            if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-                return lines[i];
-            }
-        }
-        return [];
-    }
-
     return (
         <div className='duo-game'>
-            <div className="label">{generateStatus()}</div>
-            <Board squares={squares} handleClick={handleClick} strike={getLineList()} />
+            <div className="header">{generateStatus()}</div>
+            <Board squares={squares} handleClick={handleClick}/>
             <div className='center'>
                 <button className="clicker new-game" onClick={() => resetBoard()}>New Game</button>
             </div>

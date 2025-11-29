@@ -92,26 +92,11 @@ export default function CPU() {
         );
     }
 
-    function getLineList() {
-        const lines = algo.lines;
-
-        if(!winner) {
-            return [];
-        }
-        for (let i = 0; i < lines.length; i++) {
-            const [a, b, c] = lines[i];
-            if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-                return lines[i];
-            }
-        }
-        return [];
-    }
-
     return (
 
         <>
-            CPU GAME!
-            {status()}
+            <div className='header'>CPU GAME</div>
+            <div className='sub-header'>{status()}</div>
             {!difficulty && (
                 <div>
                     <Button text="Easy" onButtonClick={() => selectDifficulty("Easy")}/>
@@ -123,7 +108,7 @@ export default function CPU() {
             {difficulty && (
                 <div>
                     
-                    <Board squares={squares} handleClick={handleClick} strike={getLineList()} />
+                    <Board squares={squares} handleClick={handleClick} />
                     <div>
                         <Button text="New Game" onButtonClick={() => resetBoard()} />
                     </div>

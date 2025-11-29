@@ -34,8 +34,6 @@ the easyMove function.
  */
 
 export function mediumMove(currSquares, value) {
-    console.log("IN " + currSquares + " for " + value);
-
     let winningMove = false;
     let criticalMove = false;
     let movePlace = null;
@@ -45,10 +43,8 @@ export function mediumMove(currSquares, value) {
 
         
         const lineStatusCurrentPlayer = isReadyLine(currSquares,currLine,value);
-        console.log("Current move: " + lineStatusCurrentPlayer);
 
         const lineStatusOpponentPlayer = isReadyLine(currSquares,currLine,value && value=="X"?"O":"X");
-        console.log("Opponent move: " + lineStatusOpponentPlayer);
 
         if(lineStatusCurrentPlayer != null) {
             movePlace = lineStatusCurrentPlayer;
@@ -72,10 +68,6 @@ export function mediumMove(currSquares, value) {
 }
 
 function isReadyLine(currSquares,currLine, value) {
-    console.log("Line: " + currLine);
-    console.log("a"+currSquares[currLine[0]]);
-    console.log("b"+currSquares[currLine[1]]);
-    console.log("c"+currSquares[currLine[2]]);
     if (currSquares[currLine[0]] == value && currSquares[currLine[1]] == value && currSquares[currLine[2]] == null) {
         return currLine[2];
     }
@@ -89,7 +81,7 @@ function isReadyLine(currSquares,currLine, value) {
 }
 
 export function difficultMove(currSquares, value) {
-    mediumMove(currSquares, value);
+    makeBestMove(currSquares, value);
 }
 
 export function calculateWinner(squares) {
@@ -112,3 +104,87 @@ export const lines = [
     [0, 4, 8],
     [2, 4, 6]
 ];
+
+function makeBestMove(board, player) {
+  // Determine who the opponent is
+  const opponent = player === "X" ? "O" : "X";
+
+  // --- Helper: Check for Terminal State (Win/Loss/Draw) ---
+  function checkWinner(currentBoard) {
+    const winningCombos = [
+      [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+      [0, 3, 6], [1, 4, 7], [2, 5, 8], // Cols
+      [0, 4, 8], [2, 4, 6]             // Diagonals
+    ];
+
+    for (let combo of winningCombos) {
+      const [a, b, c] = combo;
+      // Check if not null and all match
+      if (currentBoard[a] !== null && 
+          currentBoard[a] === currentBoard[b] && 
+          currentBoard[a] === currentBoard[c]) {
+        return currentBoard[a] === player ? 10 : -10;
+      }
+    }
+
+    // Check for Draw (no nulls left)
+    if (!currentBoard.includes(null)) {
+      return 0;
+    }
+
+    return null; // Game is ongoing
+  }
+
+  // --- Helper: Minimax Algorithm ---
+  function minimax(currentBoard, depth, isMaximizing) {
+    let score = checkWinner(currentBoard);
+    if (score !== null) return score;
+
+    if (isMaximizing) {
+      let bestScore = -Infinity;
+      for (let i = 0; i < 9; i++) {
+        if (currentBoard[i] === null) {
+          currentBoard[i] = player;
+          let currentScore = minimax(currentBoard, depth + 1, false);
+          currentBoard[i] = null; // Backtrack (Reset to null)
+          bestScore = Math.max(currentScore, bestScore);
+        }
+      }
+      return bestScore;
+    } else {
+      let bestScore = Infinity;
+      for (let i = 0; i < 9; i++) {
+        if (currentBoard[i] === null) {
+          currentBoard[i] = opponent;
+          let currentScore = minimax(currentBoard, depth + 1, true);
+          currentBoard[i] = null; // Backtrack (Reset to null)
+          bestScore = Math.min(currentScore, bestScore);
+        }
+      }
+      return bestScore;
+    }
+  }
+
+  // --- Main Execution ---
+  let bestScore = -Infinity;
+  let move = -1;
+
+  for (let i = 0; i < 9; i++) {
+    // Strictly check for null
+    if (board[i] === null) {
+      board[i] = player;
+      let score = minimax(board, 0, false);
+      board[i] = null; // Undo the move
+
+      if (score > bestScore) {
+        bestScore = score;
+        move = i;
+      }
+    }
+  }
+
+  // Update the original array reference
+  if (move !== -1) {
+    board[move] = player;
+  }
+}

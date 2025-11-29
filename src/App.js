@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import CPU from "./CPU";
-import Duo from "./Duo";
 import Online from './Online';
 import Button from './Button';
+import PP_Board from './PP_Board';
 
 export default function Game() {
 
@@ -18,30 +18,29 @@ export default function Game() {
 
   return (
     <div className="game">
+      <div className='box'>
+        {!page && (
+          <>
+            <Button text = "CPU" onButtonClick={() => handleButtonClick("CPU")}/>
+            <Button text = "Pass & Play" onButtonClick={() => handleButtonClick("Duo")}/>
+            <Button text = "Online" onButtonClick={() => handleButtonClick("Online")}/>
+          </>
+          
+        )}
 
-      {!page && (
-        
-        <div className='box'>
-          <Button text = "CPU" onButtonClick={() => handleButtonClick("CPU")}/>
-          <Button text = "Pass & Play" onButtonClick={() => handleButtonClick("Duo")}/>
-          <Button text = "Online" onButtonClick={() => handleButtonClick("Online")}/>
+        <div>
+          {page === "CPU" && (
+            <CPU />
+          )}
+          {page === "Duo" && (
+            <PP_Board />
+          )}
+          {page === "Online" && (
+            <Online />
+          )}
         </div>
-        
-      )}
-
-      <div>
-        {page === "CPU" && (
-          <CPU />
-        )}
-        {page === "Duo" && (
-          <Duo />
-        )}
-        {page === "Online" && (
-          <Online />
-        )}
       </div>
-
-      <HomeButton onButtonClick={() => handleGoBack()} />
+        <HomeButton onButtonClick={() => handleGoBack()} />
      
     </div>
   );

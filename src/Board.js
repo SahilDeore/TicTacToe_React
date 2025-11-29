@@ -1,6 +1,7 @@
 import Square from './Square';
+import * as algo from './Algo';
 
-export default function Board({ squares, handleClick, strike }) {
+export default function Board({ squares, handleClick }) {
 
   const classNames = {
 
@@ -15,7 +16,21 @@ export default function Board({ squares, handleClick, strike }) {
 
   };
 
+  function getStrikeList() {
+      const lines = algo.lines;
+
+      for (let i = 0; i < lines.length; i++) {
+          const [a, b, c] = lines[i];
+          if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+              return lines[i];
+          }
+      }
+      return [];
+  }
+
   function getStrikeClassname() {
+
+    const strike = getStrikeList();
     
     for (const [className, coordinates] of Object.entries(classNames)) {
       if (coordinates.every((item, index) => item === strike[index])) {
