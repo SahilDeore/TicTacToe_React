@@ -12,6 +12,7 @@ export default function Join({setError, sessionId, setSessionId, setPlayerId}) {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'ngrok-skip-browser-warning': 'true',
                 },
                 body: JSON.stringify(joinRequestBody),
             }))

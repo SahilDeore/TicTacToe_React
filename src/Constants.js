@@ -1,4 +1,5 @@
-export const backend_url = "http://localhost:8080";
+// export const backend_url = "http://localhost:8080";
+export const backend_url = "https://star-owl-literate.ngrok-free.app";
 
 export const POLLING_INTERVAL = 100;
 

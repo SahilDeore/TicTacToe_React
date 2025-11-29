@@ -16,7 +16,10 @@ export default function Online() {
         try {
 
             const response = await (fetch(backend_url+'/check', {
-                method: 'GET'
+                method: 'GET',
+                headers: {
+                    'ngrok-skip-browser-warning': 'true',
+                }
             }))
             if (!response.ok) {
                 throw new Error("Network error!");
@@ -33,7 +36,10 @@ export default function Online() {
     const getSession = async () => {
         try {
             const response = await (fetch(backend_url+'/createSession', {
-                method: 'GET'
+                method: 'GET',
+                headers: {
+                    'ngrok-skip-browser-warning': 'true',
+                }
             }))
             if (!response.ok) {
                 throw new Error("Network error!");
